@@ -25,8 +25,10 @@ def get_results(snippet_input):
 
     response = requests.get(url, headers=headers, params=querystring)
 
-    print(json.dumps(response.json(), indent=4))
+    #print(json.dumps(response.json(), indent=4))
     return response.json()
+
+
 
 def format_results(responce):
 
@@ -47,14 +49,20 @@ def format_results(responce):
                 snippet = item.get("value")
 
                 finds.append({"title":title,"artist":artist,"value": snippet})
-                    
-            
 
-    #snippet = filtered_list['sections'][0]['hits'][0]['highlights'][0]['value']
-    #finds.append({"snippet": snippet})
+    return finds
 
-    print(json.dumps(finds, indent = 4))
-    print(filtered_list)
+def print_results(finds):
+
+    print("\n" + "HERE ARE THE TOP RESULTS:" + "\n")
+
+    for i in range(len(finds)):
+
+        print("#" + str(i+1) + "\n")
+        print("Title: " + finds[i]["title"])
+        print("Artist: " + finds[i]["artist"])
+        print("Snippet: " + finds[i]["value"].replace("\n"," "))
+        print("\n")
 
     return
 
@@ -64,7 +72,9 @@ def format_results(responce):
 if __name__ == "__main__":
     
     responce = get_results(get_snippet())
-    format_results(responce)
+
+    print_results(format_results(responce))
+
     
 
 
