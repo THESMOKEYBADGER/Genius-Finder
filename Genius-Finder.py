@@ -25,7 +25,7 @@ def get_results(snippet_input):
 
     response = requests.get(url, headers=headers, params=querystring)
 
-    #print(json.dumps(response.json(), indent=4))
+    print(json.dumps(response.json(), indent=4))
     return response.json()
 
 def format_results(responce):
@@ -37,14 +37,24 @@ def format_results(responce):
 
 
     for song in filtered_list:
-        for result in song["hits"]:
-            object = result['result']
-            
+        for results in song["hits"]:
+            object = results['result']
+
             title = object.get("full_title")
             artist = object.get("artist_names")
-            finds.append({"title":title,"artist":artist})
+
+            for item in results["highlights"]:
+                snippet = item.get("value")
+
+                finds.append({"title":title,"artist":artist,"value": snippet})
+                    
+            
+
+    #snippet = filtered_list['sections'][0]['hits'][0]['highlights'][0]['value']
+    #finds.append({"snippet": snippet})
 
     print(json.dumps(finds, indent = 4))
+    print(filtered_list)
 
     return
 
