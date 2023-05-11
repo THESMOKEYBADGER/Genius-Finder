@@ -64,7 +64,7 @@ def get_speech_input():
         r.adjust_for_ambient_noise(source)
         sample_rate = source.SAMPLE_RATE
         
-        print("Press spacebar to start recording...")
+        print("Press spacebar to start and stop recording...")
         while True:
             try:
                 input_state = keyboard.is_pressed(' ')
@@ -75,7 +75,7 @@ def get_speech_input():
             except KeyboardInterrupt:
                 break
         
-        print("Recording complete.")
+        print("\n"+"Recording complete.")
         
         sample_width = audio.sample_width
         bytes_audio = audio.frame_data
