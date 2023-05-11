@@ -1,6 +1,9 @@
 
-import pip._vendor.requests as requests
+import requests
 import json
+import speech_recognition as sr
+import pyaudio
+
 
 
 def get_snippet():
@@ -52,6 +55,24 @@ def format_results(responce):
 
     return finds
 
+
+def get_speech_input():
+
+    r = sr.Recognizer()
+
+    with sr.Microphone() as source:
+        r.adjust_for_ambient_noise(source)
+        print("About to record...")
+        data = r.record(source, duration=5)
+        print("Recording complete.")
+        text = r.recognize_google(data,language='en')
+        print(text)
+
+
+
+
+
+
 def print_results(finds):
 
     print("\n" + "HERE ARE THE TOP RESULTS:" + "\n")
@@ -70,10 +91,12 @@ def print_results(finds):
 
 
 if __name__ == "__main__":
-    
-    responce = get_results(get_snippet())
 
-    print_results(format_results(responce))
+    get_speech_input()
+    
+    # responce = get_results(get_snippet())
+
+    # print_results(format_results(responce))
 
     
 
