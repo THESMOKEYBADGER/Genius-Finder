@@ -3,6 +3,7 @@ import requests
 import json
 import speech_recognition as sr
 import pyaudio
+import keyboard
 
 
 def get_snippet():
@@ -27,7 +28,6 @@ def get_results(snippet_input):
 
     response = requests.get(url, headers=headers, params=querystring)
 
-    #print(json.dumps(response.json(), indent=4))
     return response.json()
 
 
@@ -62,13 +62,28 @@ def get_speech_input():
 
     with sr.Microphone() as source:
         r.adjust_for_ambient_noise(source)
-        print("About to record...")
-        data = r.record(source, duration=5)
+        sample_rate = source.SAMPLE_RATE
+        
+        print("Press spacebar to start recording...")
+        while True:
+            try:
+                input_state = keyboard.is_pressed(' ')
+                if input_state:
+                    print("Recording...")
+                    audio = r.listen(source, phrase_time_limit=30)
+                    break
+            except KeyboardInterrupt:
+                break
+        
         print("Recording complete.")
-        text = r.recognize_google(data,language='en')
+        
+        sample_width = audio.sample_width
+        bytes_audio = audio.frame_data
+        text = r.recognize_google(sr.AudioData(bytes_audio, sample_rate, sample_width), language='en')
         print(text)
 
     return text
+
 
 
 
@@ -86,6 +101,7 @@ def print_results(finds):
         print("\n")
 
     return
+
 
 
 def get_option():
@@ -121,20 +137,7 @@ if __name__ == "__main__":
 
     
 
-    
 
-
-    
-
-    
-
-
-
-    # responce = get_results(get_snippet())
-
-    # print_results(format_results(responce))
-
-    
 
 
 
