@@ -5,7 +5,6 @@ import speech_recognition as sr
 import pyaudio
 
 
-
 def get_snippet():
 
     print("please enter the lyrics you remember...")
@@ -33,9 +32,9 @@ def get_results(snippet_input):
 
 
 
-def format_results(responce):
+def format_results(response):
 
-    section  = responce.get("sections")
+    section  = response.get("sections")
     filtered_list = [d for d in section if d["type"] == "lyric"]
     
     finds = []
@@ -56,6 +55,7 @@ def format_results(responce):
     return finds
 
 
+
 def get_speech_input():
 
     r = sr.Recognizer()
@@ -68,7 +68,7 @@ def get_speech_input():
         text = r.recognize_google(data,language='en')
         print(text)
 
-
+    return text
 
 
 
@@ -88,12 +88,48 @@ def print_results(finds):
     return
 
 
+def get_option():
+
+    proceed = 0
+
+    while proceed == 0:
+
+        choice  = input("Would you like to provide the lyris using text to speach or Keyboard input?" + "\n" + "1 for Keyboard" + "\n" + "2 for text-to-speech" + "\n")
+
+        if choice  == "1":
+            proceed = 1
+        elif choice == "2":
+            proceed = 1
+        else:
+            print("\n" + "Please enter a valid input...")
+
+    return choice
+
+
 
 
 if __name__ == "__main__":
 
-    get_speech_input()
+    choice = get_option()
+
+    if choice == "1":
+        text = get_snippet()
+    else:
+        text = get_speech_input()
+
+    print_results(format_results(get_results(text)))
+
     
+
+    
+
+
+    
+
+    
+
+
+
     # responce = get_results(get_snippet())
 
     # print_results(format_results(responce))
