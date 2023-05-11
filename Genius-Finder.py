@@ -6,13 +6,13 @@ import speech_recognition as sr
 import pyaudio
 import keyboard
 
-# define function to get input snippet from user
+# function to get input snippet from user
 def get_snippet():
-    print("please enter the lyrics you remember...")
+    print("\nPlease enter the lyrics you remember...")
     snippet_input = input()
     return snippet_input
 
-# define function to get results from the Genius API
+# function to get results from the Genius API
 def get_results(snippet_input):
     url = "https://genius-song-lyrics1.p.rapidapi.com/search/multi/"
     querystring = {"q":snippet_input,"per_page":"3","page":"1"}
@@ -23,7 +23,7 @@ def get_results(snippet_input):
     response = requests.get(url, headers=headers, params=querystring)
     return response.json()
 
-# define function to format the results from the Genius API
+# function to format the results from the Genius API
 def format_results(response):
     section  = response.get("sections")
     filtered_list = [d for d in section if d["type"] == "lyric"]
@@ -38,7 +38,7 @@ def format_results(response):
                 finds.append({"title":title,"artist":artist,"value": snippet})
     return finds
 
-# define function to get speech input from user using a microphone
+# function to get speech input from user using a microphone
 def get_speech_input():
     r = sr.Recognizer()
    
@@ -78,7 +78,7 @@ def get_speech_input():
     
     return text
 
-# define function to print the results in a readable format
+# function to print the results in a readable format
 def print_results(finds):
     print("\n" + "HERE ARE THE TOP RESULTS:" + "\n")
     for i in range(len(finds)):
@@ -97,7 +97,7 @@ def get_option():
 
     while proceed == 0:
 
-        choice  = input("Would you like to provide the lyris using text to speach or Keyboard input?" + "\n" + "1 for Keyboard" + "\n" + "2 for text-to-speech" + "\n")
+        choice  = input("Would you like to provide the lyris using text to speach or Keyboard input?" + "\n" + "1 for Keyboard" + "\n" + "2 for text-to-speech" + "\n\n")
 
         if choice  == "1":
             proceed = 1
